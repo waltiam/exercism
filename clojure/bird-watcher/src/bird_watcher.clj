@@ -21,16 +21,23 @@
 
 
 (defn n-days-count [birds n]
-  (apply + (take n birds)))
+  (reduce + (take n birds)))
+  ;; (apply + (take n birds)))
 
 (defn busy-days [birds]
-  (count
-   (filter #(>= % 5) birds)))
+  (->>
+   birds
+   (filter #(>= % 5))
+   count))
 
 (defn odd-week? [birds]
-  (def p [1 0 1 0 1 0 1])
-  (->>
-   (map #(= %1 %2) birds p)
-   (filter #(eval %))
-   count
-   (= 7)))
+
+  (=
+   [1 0 1 0 1 0 1]
+   birds))
+  ;; (->>
+  ;;  [1 0 1 0 1 0 1]
+  ;;  (map #(= %1 %2) birds)
+  ;;  (filter #(eval %))
+  ;;  count
+  ;;  (= 7)))
