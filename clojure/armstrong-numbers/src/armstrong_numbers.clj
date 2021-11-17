@@ -1,31 +1,25 @@
 (ns armstrong-numbers)
-(require '[clojure.string :as str])
+;; using the math library
+  ;; (require '[clojure.math.numeric-tower :as math])
 
 ;; will explode if n < 0
-(defn- exp [x n]
+(defn- expt [x n]
   (loop [acc 1 n n]
     (if (zero? n) acc
         (recur (* x acc) (dec n)))))
 
-(defn- n2s [n]
-  (format "%d" n))
-
-(defn- s2n [s]
-  ;; (read-string s))
-  (Integer/parseInt s))
-
 (defn- _n2v [n]
-  (map s2n
-       (str/split (n2s n) #"")))
+  (map #(Character/digit % 10) (str n)))
 
 (def n2v (memoize _n2v))
 
 (defn armstrong? [num]
-  (=
-   (let [v (n2v num)
-         c (count v)
-         v (map #(exp % c) v)
-         a (reduce + v)]
-     a)
-   num))
+  (let [v (n2v num)
+        c (count v)]
+    (->>
+     (map #(expt % c) v)
+    ;;  (map #(math/expt % c) v)
+     (reduce +)
+     (== num))))
+
 
